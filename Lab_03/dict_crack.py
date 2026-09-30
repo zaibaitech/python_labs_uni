@@ -23,9 +23,17 @@ def dict_attack(passwd_hash: str) -> Union[str, None]:
     print(f"[*] Cracking hash: {passwd_hash}")
     passwd_found = None
     for word in common:
-        h = hashlib.md5(word.encode()).hexdigest()
-        if h == passwd_hash:
+        # check original word
+        if hashlib.md5(word.encode()).hexdigest() == passwd_hash:
             passwd_found = word
+            break
+        # check uppercase word
+        if hashlib.md5(word.upper().encode()).hexdigest() == passwd_hash:
+            passwd_found = word.upper()
+            break
+        # check capitalized word
+        if hashlib.md5(word.capitalize().encode()).hexdigest() == passwd_hash:
+            passwd_found = word.capitalize()
             break
 
     if passwd_found:
